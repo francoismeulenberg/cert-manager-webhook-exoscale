@@ -18,6 +18,8 @@ spec:
         release: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ include "cert-manager-webhook-exoscale.fullname" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | indent 4 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -42,6 +44,8 @@ spec:
               scheme: HTTPS
               path: /healthz
               port: https
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | indent 8 }}
           volumeMounts:
             - name: certs
               mountPath: /tls
