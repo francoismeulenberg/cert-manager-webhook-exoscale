@@ -19,8 +19,7 @@ spec:
     spec:
       serviceAccountName: {{ include "cert-manager-webhook-exoscale.fullname" . }}
       {{- with .Values.podSecurityContext }}
-            securityContext:
-      {{ toYaml . | nindent 8 }}
+            securityContext: {{ toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -47,8 +46,7 @@ spec:
               path: /healthz
               port: https
           {{- with .Values.containerSecurityContext }}
-                securityContext:
-          {{ toYaml . | nindent 12 }}
+                securityContext: {{ toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
             - name: certs
