@@ -32,9 +32,9 @@ certManager:
   serviceAccountName: cert-manager
 
 image:
-  repository: ghcr.io/glasskube/cert-manager-webhook-exoscale
+  repository: francois013/cert-manager-webhook-exoscale
   # tag uses the chart's appVersion by default
-  tag:
+  tag: v0.11
   pullPolicy: IfNotPresent
 
 nameOverride: ""
