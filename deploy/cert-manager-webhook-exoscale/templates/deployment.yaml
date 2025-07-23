@@ -20,7 +20,7 @@ spec:
       serviceAccountName: {{ include "cert-manager-webhook-exoscale.fullname" . }}
       {{- with .Values.podSecurityContext }}
             securityContext:
-      {{ toYaml . | indent 8 }}
+      {{ toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -48,7 +48,7 @@ spec:
               port: https
           {{- with .Values.containerSecurityContext }}
                 securityContext:
-          {{ toYaml . | indent 12 }}
+          {{ toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
             - name: certs
