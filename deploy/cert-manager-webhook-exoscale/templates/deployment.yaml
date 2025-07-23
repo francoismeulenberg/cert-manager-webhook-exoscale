@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "cert-manager-webhook-exoscale.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCount | default 1 }}
   selector:
     matchLabels:
       app: {{ include "cert-manager-webhook-exoscale.name" . }}
@@ -19,7 +19,7 @@ spec:
     spec:
       serviceAccountName: {{ include "cert-manager-webhook-exoscale.fullname" . }}
       {{- with .Values.podSecurityContext }}
-            securityContext: {{ toYaml . | nindent 8 }}
+      securityContext: {{ toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -46,29 +46,25 @@ spec:
               path: /healthz
               port: https
           {{- with .Values.containerSecurityContext }}
-                securityContext: {{ toYaml . | nindent 12 }}
+          securityContext: {{ toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
             - name: certs
               mountPath: /tls
               readOnly: true
- {{- with .Values.resources }}
-          resources:
- {{ toYaml . | indent 12 }}
- {{- end }}
+          {{- with .Values.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end }}
       volumes:
         - name: certs
           secret:
             secretName: {{ include "cert-manager-webhook-exoscale.servingCertificate" . }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
