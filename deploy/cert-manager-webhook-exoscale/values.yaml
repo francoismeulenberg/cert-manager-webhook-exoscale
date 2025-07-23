@@ -34,7 +34,7 @@ certManager:
 image:
   repository: francois013/cert-manager-webhook-exoscale
   # tag uses the chart's appVersion by default
-  tag: v0.11
+  tag: v0.12
   pullPolicy: IfNotPresent
 
 nameOverride: ""
